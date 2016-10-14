@@ -61,7 +61,7 @@ function rollTheDice(message)
     message.reply("You rolled the dice: " + result + "\n");
     if (goal > -1)
     {
-        if (result <= goal)
+        if (result <= goal + bonus - malus)
             message.channel.sendMessage("Nice you reached the goal !");
         else
             message.channel.sendMessage("You failed !");
