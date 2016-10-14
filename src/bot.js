@@ -31,7 +31,7 @@ client.on('message', message =>
         setGoal(message);
     else if (message.content.substr(0, 8) == "SETBONUS")
         setBonus(message);
-    else if (message.content.substr(0, 8) == "SETBONUS")
+    else if (message.content.substr(0, 8) == "SETMALUS")
         setMalus(message);
     else if (message.content == "STATE")
         printState(message);
@@ -72,18 +72,24 @@ function getRandomInt(min, max)
 
 function rollTheDice(message)
 {
+    var messageRepply;
     var valueDice = parseInt(message.content.substr(1));
     if (isNaN(valueDice))
         return;
     var result = getRandomInt(0, valueDice);
-    message.reply("You rolled the dice: " + result + "\n");
+    goal = goal + bonus - malus;
+    messageRepply = "\nYou rolled the dice:  " + result;
+    console.log(messageRepply);
     if (goal > -1)
     {
+        messageRepply += "\nYou had to roll under " + goal + "\n\n";
         if (result <= goal + bonus - malus)
-            message.channel.sendMessage("Nice you reached the goal !");
+            messageRepply += "Nice you reached the goal !";
         else
-            message.channel.sendMessage("You failed !");
+            messageRepply += "You failed !";
+        console.log(messageRepply);
   }
+  message.reply(messageRepply);
   resetValues();
 }
 
