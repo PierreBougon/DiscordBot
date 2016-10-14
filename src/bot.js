@@ -29,6 +29,10 @@ client.on('message', message =>
         message.channel.sendMessage(helpDialog);
     else if (message.content.substr(0, 7) == "SETGOAL")
         setGoal(message);
+    else if (message.content.substr(0, 8) == "SETBONUS")
+        setBonus(message);
+    else if (message.content.substr(0, 8) == "SETBONUS")
+        setMalus(message);
     else if (message.content == "STATE")
         printState(message);
 });
@@ -43,6 +47,20 @@ function setGoal(message)
     goal = parseInt(message.content.substr(7));
     if (isNaN(goal))
         goal = -1;
+}
+
+function setBonus(message)
+{
+    bonus = parseInt(message.content.substr(8));
+    if (isNaN(bonus))
+        bonus = 0;
+}
+
+function setMalus(message)
+{
+    malus = parseInt(message.content.substr(8));
+    if (isNaN(malus))
+        malus = 0;
 }
 
 function getRandomInt(min, max)
