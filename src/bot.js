@@ -19,63 +19,61 @@ client.on('ready', () =>
 
 client.on('message', message =>
 {
-  message.content = message.content.toUpperCase();
-  if (message.author == client.user || message.content.indexOf(" ") > -1)
-    return;
+    message.content = message.content.toUpperCase();
+    if (message.author == client.user || message.content.indexOf(" ") > -1)
+        return;
 
-
-  if (message.content[0] == 'D')
-    rollTheDice(message);
-  else if (message.content == "HELP")
-    message.channel.sendMessage(helpDialog);
-  else if (message.content.substr(0, 7) == "SETGOAL")
-    setGoal(message);
-  else if (message.content == "STATE")
-    printState(message);
+    if (message.content[0] == 'D')
+        rollTheDice(message);
+    else if (message.content == "HELP")
+        message.channel.sendMessage(helpDialog);
+    else if (message.content.substr(0, 7) == "SETGOAL")
+        setGoal(message);
+    else if (message.content == "STATE")
+        printState(message);
 });
 
 function printState(message)
 {
-  message.channel.sendMessage("State:\n\nGoal = " + goal + "\nBonus = " + bonus + "\nMalus = " + malus);
+    message.channel.sendMessage("State:\n\nGoal = " + goal + "\nBonus = " + bonus + "\nMalus = " + malus);
 }
 
 function setGoal(message)
 {
-  goal = parseInt(message.content.substr(7));
-  if (isNaN(goal))
-    goal = -1;
+    goal = parseInt(message.content.substr(7));
+    if (isNaN(goal))
+        goal = -1;
 }
 
 function getRandomInt(min, max)
 {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function rollTheDice(message)
 {
-  var valueDice = parseInt(message.content.substr(1));
-  if (isNaN(valueDice))
-    return;
+    var valueDice = parseInt(message.content.substr(1));
+    if (isNaN(valueDice))
+        return;
     var result = getRandomInt(0, valueDice);
-  message.reply("You rolled the dice: " + result + "\n");
-  if (goal > -1)
-  {
-    if (result <= goal)
-      message.channel.sendMessage("Nice you reached the goal !");
-    else
-      message.channel.sendMessage("You failed !");
+    message.reply("You rolled the dice: " + result + "\n");
+    if (goal > -1)
+    {
+        if (result <= goal)
+            message.channel.sendMessage("Nice you reached the goal !");
+        else
+            message.channel.sendMessage("You failed !");
   }
-
   resetValues();
 }
 
 function resetValues()
 {
-  goal = -1;
-  bonus = 0;
-  malus = 0;
+    goal = -1;
+    bonus = 0;
+    malus = 0;
 }
 
 client.login(token);
