@@ -9,8 +9,8 @@ Set the next bonus value\nsetMalus[value]\t\t\t\t\t\t\
 Set the next malus value\n";
 
 var goal = -1;
-var Malus = -1;
-var Bonus = -1;
+var malus = 0;
+var bonus = 0;
 
 client.on('ready', () =>
 {
@@ -28,14 +28,21 @@ client.on('message', message =>
     rollTheDice(message);
   else if (message.content == "HELP")
     message.channel.sendMessage(helpDialog);
-  else if (message.content == "setGoal")
+  else if (message.content.substr(0, 7) == "SETGOAL")
     setGoal(message);
+  else if (message.content == "STATE")
+    printState(message);
 });
+
+function printState(message)
+{
+  message.channel.sendMessage("State:\n\nGoal = " + goal + "\nBonus = " + bonus + "\nMalus = " + malus);
+}
 
 function setGoal(message)
 {
   goal = parseInt(message.content.substr(7));
-  if (goal == NaN)
+  if (isNaN(goal))
     goal = -1;
 }
 
@@ -51,7 +58,24 @@ function rollTheDice(message)
   var valueDice = parseInt(message.content.substr(1));
   if (isNaN(valueDice))
     return;
-  message.reply("You rolled the dice: " + getRandomInt(0, valueDice));
+    var result = getRandomInt(0, valueDice);
+  message.reply("You rolled the dice: " + result + "\n");
+  if (goal > -1)
+  {
+    if (result <= goal)
+      message.channel.sendMessage("Nice you reached the goal !");
+    else
+      message.channel.sendMessage("You failed !");
+  }
+
+  resetValues();
+}
+
+function resetValues()
+{
+  goal = -1;
+  bonus = 0;
+  malus = 0;
 }
 
 client.login(token);
